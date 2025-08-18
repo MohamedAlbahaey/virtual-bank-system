@@ -1,4 +1,4 @@
-package com.example.userService.dto;
+package com.example.userService.dtos;
 
 public class LoginRequest {
     private String username;

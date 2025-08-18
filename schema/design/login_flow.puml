@@ -1,0 +1,29 @@
+@startuml
+' Author: Yomna El-Soufy
+title Login Flow - Virtual Bank (User Service Focused)
+
+actor Client
+participant "WSO2 API Gateway" as Gateway
+participant "User Service" as Service
+database "User Database" as DB
+
+Client -> Gateway : POST /users/login {username, password}
+Gateway -> Service : Forward login request
+
+Service -> DB : Retrieve user by username
+alt Username exists
+    DB --> Service : User record with hashed password
+    Service -> Service : Validate password (hash check)
+    alt Password valid
+        Service --> Gateway : 200 OK (userId, username)
+        Gateway --> Client : 200 OK (userId, username)
+    else Password invalid
+        Service --> Gateway : 401 Unauthorized (Invalid credentials)
+        Gateway --> Client : 401 Unauthorized
+    end
+else Username not found
+    DB --> Service : User not found
+    Service --> Gateway : 401 Unauthorized (Invalid credentials)
+    Gateway --> Client : 401 Unauthorized
+end
+@enduml

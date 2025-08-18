@@ -1,0 +1,30 @@
+@startuml
+' Author: Yomna El-Soufy
+title Make Transaction Flow (Initiation & Execution) - Without BFF Layer
+
+actor Client
+participant "WSO2 API Gateway" as Gateway
+participant "Transaction Service" as Txn
+participant "Account Service" as Account
+
+== Step 1: Client Initiates Transaction ==
+Client -> Gateway : POST /transactions/transfer/initiation
+Gateway -> Txn : Forward request
+
+Txn -> Account : Validate fromAccount & toAccount and check balance(GET /accounts/{accountId})
+Account --> Txn : Validation Result
+Txn -> Txn : Insert transaction with status=INITIATED
+Txn --> Gateway : 200 OK with transactionId
+Gateway --> Client : 200 OK with transactionId
+
+== Step 2: Client Executes Transaction ==
+Client -> Gateway : POST /transactions/transfer/execution
+Gateway -> Txn : POST /transactions/transfer/execution
+Txn -> Txn : Fetch transaction
+Txn -> Account : PUT /accounts/transfer 
+Account --> Txn : SUCCESS
+Txn -> Txn : Update transaction status = SUCCESS
+Txn --> Gateway : 200 OK (Transfer Success)
+Gateway --> Client : 200 OK (Transfer Completed)
+
+@enduml

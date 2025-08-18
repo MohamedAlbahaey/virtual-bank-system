@@ -1,0 +1,37 @@
+@startuml
+' Author: Yomna El-Soufy
+title Explicit Account Creation Flow - Virtual Bank
+
+actor Client
+participant "WSO2 API Gateway" as Gateway
+participant "Account Service" as Account
+participant "User Service" as User
+database "User Database" as UserDB
+database "Account Database" as AccountDB
+
+Client -> Gateway : POST /accounts {userId, accountType, initialBalance}
+Gateway -> Account : Forward request
+
+alt Valid input
+Account -> User : GET /users/{userId}/profile
+User -> UserDB : Find user by userId
+alt User exists
+    UserDB --> User : User details
+    User --> Account : 200 OK (User found)
+    
+    
+        Account -> AccountDB : Save account with generated accountNumber
+        AccountDB --> Account : Account saved with accountId
+        Account --> Gateway : 201 Created (accountId, accountNumber, success message)
+        Gateway --> Client : 201 Created
+else User does not exist
+    UserDB --> User : Not Found
+    User --> Account : 404 Not Found (User does not exist)
+    Account --> Gateway : 404 Not Found
+    Gateway --> Client : 404 Not Found
+end
+else Invalid input
+        Account --> Gateway : 400 Bad Request (Invalid type or balance)
+        Gateway --> Client : 400 Bad Request
+    end
+@enduml

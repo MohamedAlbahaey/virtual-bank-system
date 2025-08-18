@@ -1,0 +1,33 @@
+@startuml
+' Author: Yomna El-Soufy
+title User Registration Flow (Handled by User Service)
+
+actor Client
+participant "WSO2 API Gateway" as Gateway
+participant "User Service" as Service
+database "User Database" as DB
+
+Client -> Gateway : POST /users/register {username, email, password, firstName, lastName}
+Gateway -> Service : Forward request
+
+Service -> DB : Check if username exists
+alt username exists
+    DB --> Service : Exists
+    Service --> Gateway : 409 Conflict (Username or email already exists)
+    Gateway --> Client : 409 Conflict
+else username does not exist
+    DB --> Service : Not Found
+    Service -> DB : Check if email exists
+    alt email exists
+        DB --> Service : Exists
+        Service --> Gateway : 409 Conflict (Username or email already exists)
+        Gateway --> Client : 409 Conflict
+    else email does not exist
+        DB --> Service : Not Found
+        Service -> DB : Save new user with hashed password
+        DB --> Service : Saved user with userId
+        Service --> Gateway : 201 Created (userId, username, success message)
+        Gateway --> Client : 201 Created
+    end
+end
+@enduml

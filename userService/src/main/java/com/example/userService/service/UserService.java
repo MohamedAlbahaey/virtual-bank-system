@@ -34,9 +34,9 @@ public class UserService {
         // }
     }
 
-    // public UserResponse loginUser(String username, String password) {
-    //     return userRepo.findByUsernameAndPassword(username, password);
-    // }
+    public Users loginUser(String username, String password) {
+        return userRepo.findByUsernameAndPassword(username, password);
+    }
     
     public Users getUserProfile(int userId){
         return userRepo.findById(userId).orElse(null);

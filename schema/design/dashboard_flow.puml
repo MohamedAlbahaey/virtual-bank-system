@@ -1,0 +1,29 @@
+@startuml
+' Author: Yomna El-Soufy
+title Detailed Dashboard Aggregation Flow - Virtual Bank
+
+actor Client
+participant "WSO2 API Gateway" as Gateway
+participant "BFF Service" as BFF
+participant "User Service" as User
+participant "Account Service" as Account
+participant "Transaction Service" as Txn
+
+Client -> Gateway : GET /bff/dashboard/{userId}
+Gateway -> BFF : Forward request
+
+BFF -> User : GET /users/{userId}/profile
+User --> BFF : 200 OK (User Profile)
+BFF -> Account : GET /users/{userId}/accounts
+Account --> BFF : 200 OK (List of Accounts)
+
+loop For each account in List of Accounts
+    BFF -> Txn : GET /accounts/{accountId}/transactions
+    Txn --> BFF : 200 OK (Transaction List)
+end
+BFF -> BFF : Aggregate data into dashboard JSON
+
+BFF --> Gateway : 200 OK (Aggregated Dashboard JSON)
+Gateway --> Client : 200 OK (Dashboard Data)
+
+@enduml

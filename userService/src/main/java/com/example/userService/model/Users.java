@@ -1,5 +1,7 @@
 package com.example.userService.model;
 
+import java.util.UUID;
+
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.Column;
@@ -12,8 +14,9 @@ import jakarta.persistence.Id;
 public class Users {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     @Column(unique = true, nullable = false)
     private String username;
     @Column(unique = true, nullable = false)
@@ -30,7 +33,7 @@ public class Users {
     public Users() {
     }
 
-    public Users(int id, String username, String password, String email, String firstName, String lastName,
+    public Users(UUID id, String username, String password, String email, String firstName, String lastName,
             String createdAt) {
         this.id = id;
         this.username = username;
@@ -41,13 +44,13 @@ public class Users {
         this.createdAt = createdAt;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
 
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
