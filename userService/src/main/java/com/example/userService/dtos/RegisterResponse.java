@@ -4,11 +4,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
 public class RegisterResponse {
     @JsonProperty("userId")
     private UUID id;
@@ -17,5 +12,17 @@ public class RegisterResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }
