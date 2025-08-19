@@ -1,5 +1,6 @@
 package com.example.userService.model;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -28,13 +29,13 @@ public class Users {
     @Column(nullable = false)
     private String lastName;
     @CreatedDate
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     public Users() {
     }
 
     public Users(UUID id, String username, String password, String email, String firstName, String lastName,
-            String createdAt) {
+            LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -48,81 +49,55 @@ public class Users {
         return id;
     }
 
-
-
     public void setId(UUID id) {
         this.id = id;
     }
-
-
 
     public String getUsername() {
         return username;
     }
 
-
-
     public void setUsername(String username) {
         this.username = username;
     }
-
-
 
     public String getPassword() {
         return password;
     }
 
-
-
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     public String getEmail() {
         return email;
     }
 
-
-
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     public String getFirstName() {
         return firstName;
     }
 
-
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-
 
     public String getLastName() {
         return lastName;
     }
 
-
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-
-
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-
-
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }
