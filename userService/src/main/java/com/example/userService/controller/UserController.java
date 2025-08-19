@@ -71,8 +71,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public Users homePage(@RequestBody Users user) {
-        return userService.loginUser(user.getUsername(), user.getPassword());
+    public String homePage() {
+        return "User Service";
     }
 
 }

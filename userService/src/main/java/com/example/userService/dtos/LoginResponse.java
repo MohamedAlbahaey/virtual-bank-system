@@ -16,4 +16,12 @@ public class LoginResponse {
     public String getUsername() {
         return username;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

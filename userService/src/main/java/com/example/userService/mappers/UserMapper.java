@@ -27,7 +27,7 @@ public interface UserMapper {
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "firstName", ignore = true)
     @Mapping(target = "lastName", ignore = true)
-    @Mapping(target = "createdAt", expression = "java(java.time.LocalDataeTime.now())")
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     Users toEntity(LoginRequest user);
 
 }

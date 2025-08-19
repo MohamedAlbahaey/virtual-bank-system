@@ -25,4 +25,12 @@ public class RegisterResponse {
     public String getMessage() {
         return message;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
