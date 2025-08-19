@@ -9,12 +9,13 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UserDto {
+public class RegisterResponse {
     @JsonProperty("userId")
     private UUID id;
     private String username;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private String message;
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
