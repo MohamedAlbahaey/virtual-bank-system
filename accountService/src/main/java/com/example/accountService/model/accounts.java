@@ -5,14 +5,19 @@ import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedDate;
 
+import com.example.accountService.enums.AccountStatus;
+import com.example.accountService.enums.AccountType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity(name = "accounts")
-public class accounts {
+public class Accounts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -23,12 +28,15 @@ public class accounts {
     @Column(unique = true, nullable = false)
     private String accountNumber;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String accountType; // ENUM
+    private AccountType accountType;
 
     private double balance;
 
-    private String status; // ENUM
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
+    private AccountStatus status = AccountStatus.ACTIVE;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -36,11 +44,11 @@ public class accounts {
     @CreatedDate
     private LocalDateTime updatedAt;
 
-    public accounts() {
+    public Accounts() {
     }
 
-    public accounts(UUID id, UUID userId, String accountNumber, String accountType, double balance, String status,
-            LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Accounts(UUID id, UUID userId, String accountNumber, AccountType accountType, double balance,
+            AccountStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.accountNumber = accountNumber;
@@ -75,11 +83,11 @@ public class accounts {
         this.accountNumber = accountNumber;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
 
@@ -91,11 +99,11 @@ public class accounts {
         this.balance = balance;
     }
 
-    public String getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
     }
 

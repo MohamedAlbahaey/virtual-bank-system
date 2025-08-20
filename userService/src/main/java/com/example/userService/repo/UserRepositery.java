@@ -1,4 +1,4 @@
-package com.example.userService.repositery;
+package com.example.userService.repo;
 
 import java.util.UUID;
 
