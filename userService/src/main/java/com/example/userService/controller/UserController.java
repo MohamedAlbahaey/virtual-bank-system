@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.userService.dtos.LoginRequest;
 import com.example.userService.dtos.LoginResponse;
@@ -34,24 +35,26 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest user) {
-        Users registeredUser = userService.registerUser(userMapper.toEntity(user));
+    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerUser,
+            UriComponentsBuilder uriBuilder) {
 
-        if (registeredUser == null) {
+        Users user = userService.registerUser(userMapper.toEntity(registerUser));
+        if (user == null) {
             return ResponseEntity.status(409).build();
         }
 
-        RegisterResponse response = userMapper.toRegisterResponse(registeredUser);
+        var uri = uriBuilder.path("/users/{userId}/profile").buildAndExpand(user.getId()).toUri();
 
+        RegisterResponse response = userMapper.toRegisterResponse(user);
         response.setMessage("User Created");
 
-        return ResponseEntity.status(201).body(response);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
-        Users user = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
 
+        Users user = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
@@ -61,8 +64,8 @@ public class UserController {
 
     @GetMapping("/{userId}/profile")
     public ResponseEntity<UserDto> getUserProfile(@PathVariable UUID userId) {
-        Users user = userService.getUserProfile(userId);
 
+        Users user = userService.getUserProfile(userId);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
