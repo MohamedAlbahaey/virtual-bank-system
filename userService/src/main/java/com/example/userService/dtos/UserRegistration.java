@@ -3,7 +3,7 @@ package com.example.userService.dtos;
 import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class UserRegistration {
     private String username;
     private String password;
     private String email;

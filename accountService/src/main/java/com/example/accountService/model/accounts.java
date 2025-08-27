@@ -3,7 +3,7 @@ package com.example.accountService.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.example.accountService.enums.AccountStatus;
 import com.example.accountService.enums.AccountType;
@@ -38,10 +38,12 @@ public class Accounts {
     @Column(columnDefinition = "VARCHAR(20) DEFAULT 'ACTIVE'")
     private AccountStatus status = AccountStatus.ACTIVE;
 
-    @CreatedDate
+    @CreationTimestamp
+    @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @CreatedDate
+    @CreationTimestamp
+    @Column(updatable = true, nullable = false)
     private LocalDateTime updatedAt;
 
     public Accounts() {

@@ -10,7 +10,9 @@ import com.example.userService.model.Users;
 @Repository
 public interface UserRepositery extends JpaRepository<Users, UUID> {
 
-    Users findByUsernameAndPassword(String username, String password);
+    Users findByUsername(String username);
 
-    Users findByUsernameOrEmail(String username, String email);
+    Users findByEmail(String email);
+
+    Users findByUsernameAndPassword(String username, String password);
 }

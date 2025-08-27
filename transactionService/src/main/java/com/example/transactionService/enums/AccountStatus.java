@@ -1,4 +1,4 @@
-package com.example.accountService.enums;
+package com.example.transactionService.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

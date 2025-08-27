@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserProfile {
 
     @JsonProperty("userId")
     private UUID id;

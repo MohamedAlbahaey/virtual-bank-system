@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.userService.dtos.LoginRequest;
+import com.example.userService.dtos.UserLogin;
 import com.example.userService.dtos.LoginResponse;
-import com.example.userService.dtos.RegisterRequest;
-import com.example.userService.dtos.RegisterResponse;
-import com.example.userService.dtos.UserDto;
+import com.example.userService.dtos.UserProfile;
+import com.example.userService.dtos.UserRegistration;
+import com.example.userService.dtos.UserResponse;
 import com.example.userService.mappers.UserMapper;
 import com.example.userService.model.Users;
 import com.example.userService.service.UserService;
@@ -35,42 +35,33 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerUser,
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRegistration registerUser,
             UriComponentsBuilder uriBuilder) {
 
-        Users user = userService.registerUser(userMapper.toEntity(registerUser));
-        if (user == null) {
-            return ResponseEntity.status(409).build();
-        }
+        Users user = userService.registerUser(userMapper.toUser(registerUser));
 
         var uri = uriBuilder.path("/users/{userId}/profile").buildAndExpand(user.getId()).toUri();
 
-        RegisterResponse response = userMapper.toRegisterResponse(user);
-        response.setMessage("User Created");
+        UserResponse response = userMapper.toRegisterResponse(user);
+        response.setMessage("User registered successfully.");
 
         return ResponseEntity.created(uri).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody UserLogin loginRequest) {
 
-        Users user = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
-        if (user == null) {
-            return ResponseEntity.status(401).build();
-        }
+        Users user = userService.loginUser(userMapper.toUser(loginRequest));
 
         return ResponseEntity.ok(userMapper.toLoginResponse(user));
     }
 
     @GetMapping("/{userId}/profile")
-    public ResponseEntity<UserDto> getUserProfile(@PathVariable UUID userId) {
+    public ResponseEntity<UserProfile> getUserProfile(@PathVariable UUID userId) {
 
         Users user = userService.getUserProfile(userId);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
 
-        return ResponseEntity.ok(userMapper.toDto(user));
+        return ResponseEntity.ok(userMapper.toUserProfile(user));
     }
 
     @GetMapping("/")
