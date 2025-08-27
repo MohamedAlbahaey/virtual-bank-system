@@ -1,0 +1,15 @@
+package com.example.accountService.dtos;
+
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
+
+@Data
+public class UserResponse {
+    @JsonProperty("userId")
+    private UUID id;
+    private String username;
+    private String message;
+}

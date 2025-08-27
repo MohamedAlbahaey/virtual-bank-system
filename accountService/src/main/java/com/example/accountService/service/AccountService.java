@@ -6,8 +6,11 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.accountService.dtos.AccountDetail;
 import com.example.accountService.dtos.AccountTransferRequest;
+import com.example.accountService.dtos.UserResponse;
 import com.example.accountService.enums.AccountStatus;
 import com.example.accountService.exception.BadRequestException;
 import com.example.accountService.exception.NotFoundException;
@@ -19,6 +22,9 @@ public class AccountService {
 
     @Autowired
     AccountRepositery accountRepo;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     public String transferBetweenAccounts(AccountTransferRequest request) {
         Accounts fromAccount = accountRepo.findById(request.getFromAccountId()).orElse(null);
@@ -45,6 +51,16 @@ public class AccountService {
     }
 
     public Accounts createAccount(Accounts account) {
+
+        UserResponse user = webClientBuilder.build()
+                .get().uri("http://localhost:8093/users/{userId}/profile", account.getUserId()).retrieve()
+                .bodyToMono(UserResponse.class)
+                .block();
+
+        if (user == null) {
+            throw new NotFoundException("User with ID " + account.getUserId() + " not found.");
+        }
+
         if (account.getAccountNumber() == null || account.getAccountNumber().isEmpty()) {
             account.setAccountNumber(generateAccountNumber());
         }
