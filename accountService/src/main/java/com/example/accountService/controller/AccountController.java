@@ -18,6 +18,7 @@ import com.example.accountService.dtos.AccountDetail;
 import com.example.accountService.dtos.AccountResponse;
 import com.example.accountService.dtos.AccountTransferRequest;
 import com.example.accountService.dtos.AccountTransferResponse;
+import com.example.accountService.kafka.LogProducer;
 import com.example.accountService.mappers.AccountMapper;
 import com.example.accountService.service.AccountService;
 
@@ -27,9 +28,11 @@ public class AccountController {
     private AccountService accountService;
 
     private final AccountMapper accountMapper;
+    private final LogProducer logProducer;
 
-    public AccountController(AccountMapper accountMapper) {
+    public AccountController(AccountMapper accountMapper, LogProducer logProducer) {
         this.accountMapper = accountMapper;
+        this.logProducer = logProducer;
     }
 
     @PutMapping("/accounts/transfer")
@@ -58,8 +61,7 @@ public class AccountController {
     public ResponseEntity<AccountDetail> getAccount(@PathVariable UUID accountId) {
         var account = accountService.getAccount(accountId);
 
-        if (account == null)
-            return ResponseEntity.notFound().build();
+        logProducer.sendLog(account, "Response");
 
         return ResponseEntity.ok(accountMapper.toAccountDetail(account));
     }
@@ -68,9 +70,6 @@ public class AccountController {
     public ResponseEntity<List<AccountDetail>> getAllAccountsFromUser(@PathVariable UUID userId) {
 
         var accounts = accountService.getAllAccountsFromUser(userId);
-
-        if (accounts == null)
-            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(accountMapper.toAccountDetail(accounts));
     }

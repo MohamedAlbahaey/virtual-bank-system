@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>transactionService</artifactId>
+	<artifactId>loggingService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>transactionService</name>
+	<name>loggingService</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -39,7 +39,6 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct-processor</artifactId>
@@ -120,5 +119,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

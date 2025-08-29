@@ -15,6 +15,6 @@ public interface AccountRepositery extends JpaRepository<Accounts, UUID> {
 
     public List<Accounts> findAllByUserId(UUID userId);
 
-    @Query("SELECT a FROM Accounts a WHERE a.status = 'ACTIVE' AND a.updatedAt < :cutoff")
+    @Query("SELECT a FROM accounts a WHERE a.status = 'ACTIVE' AND a.updatedAt < :cutoff")
     List<Accounts> findStaleActiveAccounts(LocalDateTime cutoff);
 }

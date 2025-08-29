@@ -40,12 +40,12 @@ public class TransactionService {
 
     public Transaction initiateTransfer(Transaction request) {
         AccountDetail fromAccount = webClientBuilder.build()
-                .get().uri("http://localhost:8090/accounts/{accountId}", request.getFromAccountId()).retrieve()
+                .get().uri("http://localhost:8091/accounts/{accountId}", request.getFromAccountId()).retrieve()
                 .bodyToMono(AccountDetail.class)
                 .block();
 
         AccountDetail toAccount = webClientBuilder.build()
-                .get().uri("http://localhost:8090/accounts/{accountId}", request.getToAccountId()).retrieve()
+                .get().uri("http://localhost:8091/accounts/{accountId}", request.getToAccountId()).retrieve()
                 .bodyToMono(AccountDetail.class)
                 .block();
 
@@ -62,7 +62,7 @@ public class TransactionService {
 
         AccountTransferResponse message = webClientBuilder.build()
                 .put()
-                .uri("http://localhost:8090/accounts/transfer")
+                .uri("http://localhost:8091/accounts/transfer")
                 .bodyValue(transaction)
                 .retrieve()
                 .bodyToMono(AccountTransferResponse.class)

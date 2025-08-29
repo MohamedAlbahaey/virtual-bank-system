@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.example.accountService.dtos.AccountDetail;
 import com.example.accountService.dtos.AccountTransferRequest;
 import com.example.accountService.dtos.UserResponse;
 import com.example.accountService.enums.AccountStatus;
@@ -53,7 +52,7 @@ public class AccountService {
     public Accounts createAccount(Accounts account) {
 
         UserResponse user = webClientBuilder.build()
-                .get().uri("http://localhost:8093/users/{userId}/profile", account.getUserId()).retrieve()
+                .get().uri("http://localhost:8090/users/{userId}/profile", account.getUserId()).retrieve()
                 .bodyToMono(UserResponse.class)
                 .block();
 
