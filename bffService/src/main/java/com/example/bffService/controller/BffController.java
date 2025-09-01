@@ -18,7 +18,9 @@ public class BffController {
 
     @GetMapping("/bff/dashboard/{userId}")
     public ResponseEntity<Dashboard> getUserDashboard(@PathVariable UUID userId) {
-        return ResponseEntity.ok(bffService.getUserDashboard(userId));
+        var response = bffService.getUserDashboard(userId);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/bff")

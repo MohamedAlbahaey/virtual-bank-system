@@ -16,6 +16,8 @@ import com.example.accountService.exception.NotFoundException;
 import com.example.accountService.model.Accounts;
 import com.example.accountService.repo.AccountRepositery;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class AccountService {
 
@@ -25,6 +27,7 @@ public class AccountService {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Transactional
     public String transferBetweenAccounts(AccountTransferRequest request) {
         Accounts fromAccount = accountRepo.findById(request.getFromAccountId()).orElse(null);
         Accounts toAccount = accountRepo.findById(request.getToAccountId()).orElse(null);

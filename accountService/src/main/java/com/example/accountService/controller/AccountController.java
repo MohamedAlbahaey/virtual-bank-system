@@ -28,6 +28,7 @@ public class AccountController {
     private AccountService accountService;
 
     private final AccountMapper accountMapper;
+
     private final LogProducer logProducer;
 
     public AccountController(AccountMapper accountMapper, LogProducer logProducer) {

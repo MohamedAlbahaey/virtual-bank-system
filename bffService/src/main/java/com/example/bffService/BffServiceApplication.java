@@ -16,5 +16,4 @@ public class BffServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BffServiceApplication.class, args);
 	}
-
 }

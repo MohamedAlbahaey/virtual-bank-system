@@ -58,7 +58,7 @@ public class TransactionService {
 
     public Transaction executeTransfer(UUID transactionId) {
         Transaction transaction = transactionRepo.findById(transactionId)
-                .orElseThrow(() -> new BadRequestException("Invalid 'from' or 'to' account ID or insufficient funds"));
+                .orElseThrow(() -> new BadRequestException("Transaction not initiated"));
 
         AccountTransferResponse message = webClientBuilder.build()
                 .put()

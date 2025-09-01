@@ -31,7 +31,6 @@ public class LogProducer {
 
             kafkaTemplate.send("logging-topic", logMessageJson);
             System.out.println("✅ Sent log to Kafka: " + logMessageJson);
-
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error while serializing log", e);
         }
